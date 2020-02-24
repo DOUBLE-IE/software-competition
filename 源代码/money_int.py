@@ -1,39 +1,41 @@
+import logging
+
+
 def money_str2int(result_list):  # [(),()]
-    res = []
+    logging.info("-------------------into money_int's money_str2int:-------------------")
+    res_list = []
+
+    logging.debug("\tmoney_str2int(result_list) argument result_list=%s" % str(result_list))
+
     for i in range(len(result_list)):
-        money = 0
-        # print(result_list[i][2])
-        # print(type(result_list[i][2]))
-        if len(result_list[i][2].split('万/月')) == 2 or len(result_list[i][2].split('万以上/月')) == 2:
-            try:
-                money = (int(float(result_list[i][2].split('万/月')[0]) * 10000 * 12))
-            except:
-                money = (int(float(result_list[i][2].split('万以上/月')[0]) * 10000))
+        res_list.append((result_list[i][0], round(result_list[i][2], 2)))
 
-        elif len(result_list[i][2].split('万/年')) == 2 or len(result_list[i][2].split('万以上/年')) == 2:
-            try:
-                money = (int(float(result_list[i][2].split('万/年')[0]) * 10000))
-            except:
-                money = (int(float(result_list[i][2].split('万以上/年')[0]) * 10000))
+    logging.info("\tmoney_str2int(result_list) 处理后的未排序的结果res_list为:%s" % str(res_list))
+    logging.info("-------------------exit money_int's money_str2int:-------------------")
+    return sorted(res_list, key=lambda money: money[1], reverse=True)
 
-        elif len(result_list[i][2].split('千/月')) == 2 or len(result_list[i][2].split('千以上/月')) == 2:
-            try:
-                money = (int(float(result_list[i][2].split('千/月')[0]) * 1000 * 12))
-            except:
-                money = (int(float(result_list[i][2].split('千以上/月')[0]) * 10000))
 
-        elif len(result_list[i][2].split('千/年')) == 2 or len(result_list[i][2].split('千以上/月')) == 2:
-            try:
-                money = (int(float(result_list[i][2].split('千/年')[0]) * 1000))
-            except:
-                money = (int(float(result_list[i][2].split('千以上/年')[0]) * 10000))
+def get_least_money(result_list):  # [(),()]
+    logging.info("-------------------into money_int's get_least_money:-------------------")
+    res_list = []
 
-        elif len(result_list[i][2].split('元/天')) == 2:
-            money = (int(float(result_list[i][2].split('元/天')[0]) * 30 * 12))
+    logging.debug("\tget_least_money(result_list) argument result_list=%s" % str(result_list))
+    for i in range(len(result_list)):
+        res_list.append({"地区名": result_list[i][0], "最低工资": '%.1f' % (round(result_list[i][1], 2))})
 
-        elif len(result_list[i][2].split('元/小时')) == 2:
-            money = (int(float(result_list[i][2].split('元/小时')[0]) * 24 * 30 * 12))
+    logging.info("\tget_least_money(result_list) 处理后的结果res_list为:%s" % str(res_list))
+    logging.info("-------------------exit money_int's get_least_money:-------------------")
+    return res_list
 
-        res.append((result_list[i][0], money))
 
-    return sorted(res, key=lambda money: money[1], reverse=True)
+def get_most_money(result_list):  # [(),()]
+    logging.info("-------------------into money_int's get_most_money:-------------------")
+    res_list = []
+
+    logging.debug("\tget_most_money(result_list) argument result_list=%s" % str(result_list))
+    for i in range(len(result_list)):
+        res_list.append({"地区名": result_list[i][0], "最高工资": '%.1f' % (round(result_list[i][2], 2))})
+
+    logging.info("\tget_most_money(result_list) 处理后的结果res_list为:%s" % str(res_list))
+    logging.info("-------------------exit money_int's get_most_money:-------------------")
+    return res_list
